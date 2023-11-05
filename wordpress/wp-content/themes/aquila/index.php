@@ -1,27 +1,72 @@
 <?php
-
 /**
  * Main template file.
- * 
+ *
  * @package Aquila
  */
 
+get_header();
+
 ?>
 
+	<div id="primary">
+		<main id="main" class="site-main mt-5" role="main">
+			<?php
+			if ( have_posts() ) :
+				?>
+				<div class="container">
+					<?php
+					if ( is_home() && ! is_front_page() ) {
+						?>
+						<header class="mb-5">
+							<h1 class="page-title screen-reader-text">
+								<?php single_post_title(); ?>
+							</h1>
+						</header>
+						<?php
+					}
+					?>
 
-<!DOCTYPE html>
-<html lang="en">
+					<div class="row">
+						<?php
+						$index         = 0;
+						$no_of_columns = 3;
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wordpress Theme</title>
-</head>
+						while ( have_posts() ) : the_post();
 
-<body>
+							if ( 0 === $index % $no_of_columns ) {
+								?>
+								<div class="col-lg-4 col-md-6 col-sm-12">
+								<?php
+							}
 
-    <h1>lksjhfdslk</h1>
+							get_template_part( 'template-parts/content' );
 
-</body>
+							$index ++;
 
-</html>
+							if ( 0 !== $index && 0 === $index % $no_of_columns ) {
+								?>
+								</div>
+								<?php
+							}
+
+						endwhile;
+						?>
+					</div>
+				</div>
+			<?php
+
+			else :
+
+				get_template_part( 'template-parts/content-none' );
+
+			endif;
+
+			aquila_pagination();
+			?>
+		</main>
+	</div>
+
+<?php
+get_footer();
+
